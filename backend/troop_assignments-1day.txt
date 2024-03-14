@@ -1,0 +1,8 @@
+Squad 1's assignments are as follows:
+From day 1, 0000 to day 1, 2400: Ambush Enemy Convoy
+
+Squad 2's assignments are as follows:
+From day 1, 0000 to day 1, 0130: Clean Barracks
+From day 1, 0130 to day 1, 0430: Condut Aerial Survaillance
+From day 1, 0430 to day 1, 1030: Neutralize Enemey Snipers
+

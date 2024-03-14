@@ -1,80 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function CreateTask() {
-    return (
-        <div class="row">
-            <div class="col-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6
-                            class="m-0 font-weight-bold text-primary">Create
-                            Tasks</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="form">
-                            <form method="post"
-                                action="{{ url_for('createEventSubmit')}}">
-                                <div class="mb-3">
-                                    <label
-                                        class="form-label form-label font-weight-bold">Task
-                                        Name</label>
-                                    <input class="form-control form-control form-control"
-                                        type="text" name="eName" placeholder="Name"
-                                        id="eName"
-                                        required /></div>
-                                <div class="mb-3">
-                                    <label
-                                        class="form-label form-label font-weight-bold">Task
-                                        Priority</label>
-                                    <input class="form-control form-control form-control"
-                                        type="number" name="eName" placeholder="100"
-                                        id="eName"
-                                        required /></div>
-                                <div class="mb-3">
-                                    <label
-                                        class="form-label form-label font-weight-bold">Task
-                                        Dependencies</label>
-                                    <input class="form-control form-control form-control"
-                                        type="text" name="eName" placeholder=""
-                                        id="eName"
-                                        required />
-                                </div>
-                                <div class="mb-3">
-                                    <label
-                                        class="form-label form-label font-weight-bold">Squads
-                                        Needed</label>
-                                    <input class="form-control form-control form-control"
-                                        type="number" name="eName" placeholder="1"
-                                        id="eName"
-                                        required />
-                                </div>
-                                <div class="mb-3">
-                                    <label
-                                        class="form-label form-label font-weight-bold">Time
-                                        Needed</label>
-                                    <input class="form-control form-control form-control"
-                                        type="time" name="eName"
-                                        id="eName"
-                                        required />
-                                </div>
-                                <div class="row">
-                                    <div
-                                        class="col-12 mx-auto text-center d-flex pt-3 pb-4">
-                                        <a href="/events-table">
-                                            <button type="button"
-                                                class="btn btn-light d-block w-100 mt-2">Cancel</button>
-                                        </a>
-                                        <button class="btn btn-primary d-block w-20 mt-2"
-                                            type="submit">Add Task</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+function CreateTask({ onTaskCreate }) {
+  const [taskName, setTaskName] = useState('');
+  const [taskPriority, setTaskPriority] = useState('');
+  const [taskDependencies, setTaskDependencies] = useState('');
+  const [squadsNeeded, setSquadsNeeded] = useState('');
+  const [timeNeeded, setTimeNeeded] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newTask = {
+      name: taskName,
+      priority: taskPriority,
+      dependencies: taskDependencies.split(',').map(dep => dep.trim()),
+      squad: squadsNeeded,
+      time: timeNeeded,
+    };
+    onTaskCreate(newTask);
+    resetForm();
+  };
+
+  // Function to reset form fields
+  const resetForm = () => {
+    setTaskName('');
+    setTaskPriority('');
+    setTaskDependencies('');
+    setSquadsNeeded('');
+    setTimeNeeded('');
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit} className="mb-3">
+        <div className="mb-3">
+          <label htmlFor="taskName" className="form-label">Task Name:</label>
+          <input
+            type="text"
+            className="form-control"
+            id="taskName"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+          />
         </div>
-    );
+        {/* Repeat the structure for other fields */}
+        <div className="mb-3">
+          <label htmlFor="taskPriority" className="form-label">Task Priority:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="taskPriority"
+            value={taskPriority}
+            onChange={(e) => setTaskPriority(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="taskDependencies" className="form-label">Task Dependencies (comma-separated):</label>
+          <input
+            type="text"
+            className="form-control"
+            id="taskDependencies"
+            value={taskDependencies}
+            onChange={(e) => setTaskDependencies(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="squadsNeeded" className="form-label">Squads Needed:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="squadsNeeded"
+            value={squadsNeeded}
+            onChange={(e) => setSquadsNeeded(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="timeNeeded" className="form-label">Time Needed:</label>
+          <input
+            type="time"
+            className="form-control"
+            id="timeNeeded"
+            value={timeNeeded}
+            onChange={(e) => setTimeNeeded(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary me-2">Add Task</button>
+        <button type="button" className="btn btn-secondary" onClick={resetForm}>Cancel</button>
+      </form>
+    </div>
+  );
 }
 
 export default CreateTask;

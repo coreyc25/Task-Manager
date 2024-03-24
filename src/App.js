@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './bootstrap/css/sb-admin-2.min.css';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CreateTask from './CreateTask';
 import SquadTaskAssignments from './SquadTaskAssignments';
-import TasksOverview from './TasksOverview';
+import TaskFormDisplay from './TaskFormDisplay';
+import Sidebar from './Sidebar';
 
 function App() {
   const [activeTab, setActiveTab] = useState('createTask');
@@ -13,39 +18,20 @@ function App() {
   };
 
   return (
-    <div className="container mt-3">
-      <ul className="nav nav-tabs">
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === 'createTask' ? 'active' : ''}`}
-            onClick={() => setActiveTab('createTask')}
-          >
-            Create Task
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === 'squadTasks' ? 'active' : ''}`}
-            onClick={() => setActiveTab('squadTasks')}
-          >
-            Squad Task Assignments
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === 'tasksOverview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tasksOverview')}
-          >
-            Tasks Overview
-          </button>
-        </li>
-      </ul>
-      <div className="tab-content mt-3">
-        {activeTab === 'createTask' && <CreateTask onTaskCreate={handleAddTask} />}
-        {activeTab === 'squadTasks' && <SquadTaskAssignments tasks={tasks} />}
-        {activeTab === 'tasksOverview' && <TasksOverview />}
+    <Router>
+      <div id="wrapper">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div id="content-wrapper" className="d-flex flex-column">
+          <div className="tab-content mt-3">
+            <Routes>
+              <Route path="/" element={<CreateTask onTaskCreate={handleAddTask} />} />
+              <Route path="/task-overview" element={<TaskFormDisplay />} />
+              <Route path="/squad-assignments" element={<SquadTaskAssignments tasks={tasks} />} />
+            </Routes>
+          </div>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
